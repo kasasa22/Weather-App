@@ -16,11 +16,11 @@ To run the CityWeather App locally, follow these steps:
    ```bash
    git clone https://github.com/your-username/weather-app.git
 2. Navigate into the project directory:
-    cd weather-app
+      -cd weather-app
 3. Install Dependecies:
-   npm install
+      -npm install
 4. Start the application:
-    npm run dev
+      -npm run dev
 ## Usage:
     -Enter the name of a city in the input field and press Enter or click the Search button.
     -The app will display current weather details for the entered city, including temperature, humidity, wind speed, and more.
