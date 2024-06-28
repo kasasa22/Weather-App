@@ -7,7 +7,7 @@ const MainContainer = () => {
   return (
     <div>
       <Container>
-        <SearchBar />
+        <SearchBar  />
         <Typography variant="body1" component="p" style={{ padding: 16 }}>
           Today's Weather Forecast for your city
         </Typography>

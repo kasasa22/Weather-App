@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { CardActionArea, IconButton } from '@mui/material';
 import L from 'leaflet';
-import Temperature from './Temperature';
 import MyImage from '../../assets/sunny.png';
-import { IconButton } from '@mui/material';
+
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -19,61 +17,96 @@ L.Icon.Default.mergeOptions({
 });
 
 const WeatherData = () => {
-    const position = [0.3476, 32.5825];
-    const search = async (city)=>{
-      try {
-        const url=`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_APP_ID}`
-        const response = await fetch(url);
-        const data = await response.json();
-        console.log(data);
-        
-      } catch (error) {
-        
-      }
+  const [weatherData, setWeatherData] = useState(null);
+  // const position = [0.3476, 32.5825];
+
+  const search = async (city) => {
+    const allIcons = {
+      '01d': MyImage,
+      '01n': MyImage,
+      '02d': MyImage,
+      '02n': MyImage,
+      '03d': MyImage,
+      '03n': MyImage,
+      '04d': MyImage,
+      '04n': MyImage,
+      '09d': MyImage,
+      '09n': MyImage,
+      '10d': MyImage,
+      '10n': MyImage,
+      '11d': MyImage,
+      '11n': MyImage,
+      '13d': MyImage,
+      '13n': MyImage,
+      '50d': MyImage,
+      '50n': MyImage,
+    };
+
+    try {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data);
+      const icon = allIcons[data.weather[0].icon] || MyImage;
+      setWeatherData({
+        humidity: data.main.humidity,
+        windSpeed: data.wind.speed,
+        temperature: Math.floor(data.main.temp),
+        location: data.name,
+        icon: icon,
+        description: data.weather[0].description,
+        latitude: data.coord.lat,
+        longitude: data.coord.lon,
+      });
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
     }
-    useEffect(() => {
-      search("London")
-    },[])
+  };
+
+  useEffect(() => {
+    search('London');
+  }, []);
+
+  if (!weatherData) {
+    return <div>Loading...</div>;
+  }
+
+  const position = [weatherData.latitude, weatherData.longitude]
   return (
     <div style={{ margin: '16px 16px' }}>
-       <Card sx={{ width:'100%' }}>
-      <CardActionArea>
-        <div style={{ height:200 }}>
+      <Card sx={{ width: '100%' }}>
+        <CardActionArea>
+          <div style={{ height: 200 }}>
             <MapContainer center={position} zoom={13} style={{ height: '100%', width: '100%' }}>
-                <TileLayer
+              <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                />
-                <Marker position={position}>
-                    <Popup>
-                        Kampala,Uganda
-                    </Popup>
-                </Marker>
-
+              />
+              <Marker position={position}>
+                <Popup>{weatherData.location}</Popup>
+              </Marker>
             </MapContainer>
-
-        </div>
-        <CardContent style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div>
-        <Typography gutterBottom variant="h5" component="div">
-          Kampala
-        </Typography>
-        <Typography variant="h4" color="text.secondary">
-          24°C
-        </Typography>
-        <Typography variant="h6" color="text.secondary">
-          Description
-        </Typography>
-      </div>
-      <IconButton>
-        <img src={MyImage} alt="Custom Icon" style={{ width: 88, height: 88 }} />
-      </IconButton>
-    </CardContent>
-      </CardActionArea>
-   
-    </Card>
+          </div>
+          <CardContent style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <Typography gutterBottom variant="h5" component="div">
+                {weatherData.location}
+              </Typography>
+              <Typography variant="h4" color="text.secondary">
+                {weatherData.temperature}°C
+              </Typography>
+              <Typography variant="h6" color="text.secondary">
+                {weatherData.description}
+              </Typography>
+            </div>
+            <IconButton>
+              <img src={weatherData.icon} alt="Weather Icon" style={{ width: 88, height: 88 }} />
+            </IconButton>
+          </CardContent>
+        </CardActionArea>
+      </Card>
     </div>
-  )
-}
+  );
+};
 
-export default WeatherData
+export default WeatherData;
