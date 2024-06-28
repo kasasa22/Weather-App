@@ -3,11 +3,11 @@ import { TextField, Toolbar, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 const SearchBar = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState(''); // State to hold the search term
-  const inputRef = useRef(null); // Ref to access the input element
+  const [searchTerm, setSearchTerm] = useState(''); 
+  const inputRef = useRef(null); 
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value); // Update search term state
+    setSearchTerm(event.target.value); 
   };
 
   const handleSearch = () => {

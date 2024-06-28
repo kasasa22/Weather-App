@@ -8,7 +8,7 @@ const NavBar = () => {
     <Toolbar>
       
       <Typography variant="h4">
-        Weather App
+       Trevor's Weather App
       </Typography>
 
      

@@ -6,7 +6,6 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, IconButton } from '@mui/material';
 import L from 'leaflet';
-import MyImage from '../../assets/sunny.png';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -19,39 +18,18 @@ const WeatherData = ({ city }) => {
   const [weatherData, setWeatherData] = useState(null);
 
   const search = async (city) => {
-    const allIcons = {
-      '01d': MyImage,
-      '01n': MyImage,
-      '02d': MyImage,
-      '02n': MyImage,
-      '03d': MyImage,
-      '03n': MyImage,
-      '04d': MyImage,
-      '04n': MyImage,
-      '09d': MyImage,
-      '09n': MyImage,
-      '10d': MyImage,
-      '10n': MyImage,
-      '11d': MyImage,
-      '11n': MyImage,
-      '13d': MyImage,
-      '13n': MyImage,
-      '50d': MyImage,
-      '50n': MyImage,
-    };
-
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
       const response = await fetch(url);
       const data = await response.json();
       console.log(data);
-      const icon = allIcons[data.weather[0].icon] || MyImage;
+      const iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
       setWeatherData({
         humidity: data.main.humidity,
         windSpeed: data.wind.speed,
         temperature: Math.floor(data.main.temp),
         location: data.name,
-        icon: icon,
+        icon: iconUrl,
         description: data.weather[0].description,
         latitude: data.coord.lat,
         longitude: data.coord.lon,
@@ -72,7 +50,7 @@ const WeatherData = ({ city }) => {
   }
 
   const position = [weatherData.latitude, weatherData.longitude];
-  
+
   return (
     <div style={{ margin: '16px 16px' }}>
       <Card sx={{ width: '100%' }}>
@@ -111,7 +89,7 @@ const WeatherData = ({ city }) => {
   );
 };
 
-
+// Custom hook to update the map center
 const UpdateMapCenter = ({ position }) => {
   const map = useMap();
   useEffect(() => {
