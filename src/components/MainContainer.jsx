@@ -4,7 +4,7 @@ import SearchBar from './input/SearchBar';
 import WeatherData from './Display/WeatherData';
 
 const MainContainer = () => {
-  const [city, setCity] = useState('London'); 
+  const [city, setCity] = useState('Kampala'); // Default city
 
   const handleSearch = (searchTerm) => {
     setCity(searchTerm);
@@ -15,7 +15,7 @@ const MainContainer = () => {
       <Container>
         <SearchBar onSearch={handleSearch} />
         <Typography variant="body1" component="p" style={{ padding: 16 }}>
-          Today's Weather Forecast for {city}
+          Today's Weather Forecast for your city
         </Typography>
         <WeatherData city={city} />
       </Container>

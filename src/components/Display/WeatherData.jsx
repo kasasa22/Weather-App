@@ -21,8 +21,10 @@ const WeatherData = ({ city }) => {
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('City not found');
+      }
       const data = await response.json();
-      console.log(data);
       const iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
       setWeatherData({
         humidity: data.main.humidity,
@@ -35,7 +37,8 @@ const WeatherData = ({ city }) => {
         longitude: data.coord.lon,
       });
     } catch (error) {
-      console.error('Error fetching weather data:', error);
+      alert('City not found. Please enter a valid city name.');
+      setWeatherData(null);
     }
   };
 
@@ -76,7 +79,7 @@ const WeatherData = ({ city }) => {
                 {weatherData.temperature}°C
               </Typography>
               <Typography variant="h6" color="text.secondary">
-               Humidity: {weatherData.humidity} 
+                Humidity: {weatherData.humidity}
               </Typography>
               <Typography variant="h6" color="text.secondary">
                 Wind Speed: {weatherData.windSpeed} m/s

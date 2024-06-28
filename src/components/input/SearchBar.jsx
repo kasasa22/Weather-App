@@ -3,18 +3,20 @@ import { TextField, Toolbar, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 const SearchBar = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState(''); 
-  const inputRef = useRef(null); 
+  const [searchTerm, setSearchTerm] = useState('');
+  const inputRef = useRef(null);
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value); 
+    setSearchTerm(event.target.value);
   };
 
   const handleSearch = () => {
-    if (searchTerm.trim() !== '') {
-      onSearch(searchTerm);
-      setSearchTerm('');
+    if (searchTerm.trim() === '') {
+      alert('Please enter a city name');
+      return;
     }
+    onSearch(searchTerm);
+    setSearchTerm('');
   };
 
   const handleKeyPress = (event) => {
