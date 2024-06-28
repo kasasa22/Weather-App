@@ -23,7 +23,7 @@ const WeatherData = () => {
     <div style={{ margin: '16px 16px' }}>
        <Card sx={{ width:'100%' }}>
       <CardActionArea>
-        <div style={{ height:140 }}>
+        <div style={{ height:200 }}>
             <MapContainer center={position} zoom={13} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -51,11 +51,7 @@ const WeatherData = () => {
             </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Share
-        </Button>
-      </CardActions>
+   
     </Card>
     </div>
   )
