@@ -111,7 +111,7 @@ const WeatherData = ({ city }) => {
   );
 };
 
-// Custom hook to update the map center
+
 const UpdateMapCenter = ({ position }) => {
   const map = useMap();
   useEffect(() => {

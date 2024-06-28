@@ -13,6 +13,7 @@ const SearchBar = ({ onSearch }) => {
   const handleSearch = () => {
     if (searchTerm.trim() !== '') {
       onSearch(searchTerm);
+      setSearchTerm('');
     }
   };
 
