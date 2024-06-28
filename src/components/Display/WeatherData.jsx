@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -8,7 +8,6 @@ import { CardActionArea, IconButton } from '@mui/material';
 import L from 'leaflet';
 import MyImage from '../../assets/sunny.png';
 
-
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -16,9 +15,8 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-const WeatherData = () => {
+const WeatherData = ({ city }) => {
   const [weatherData, setWeatherData] = useState(null);
-  // const position = [0.3476, 32.5825];
 
   const search = async (city) => {
     const allIcons = {
@@ -64,20 +62,24 @@ const WeatherData = () => {
   };
 
   useEffect(() => {
-    search('London');
-  }, []);
+    if (city) {
+      search(city);
+    }
+  }, [city]);
 
   if (!weatherData) {
     return <div>Loading...</div>;
   }
 
-  const position = [weatherData.latitude, weatherData.longitude]
+  const position = [weatherData.latitude, weatherData.longitude];
+  
   return (
     <div style={{ margin: '16px 16px' }}>
       <Card sx={{ width: '100%' }}>
         <CardActionArea>
           <div style={{ height: 200 }}>
             <MapContainer center={position} zoom={13} style={{ height: '100%', width: '100%' }}>
+              <UpdateMapCenter position={position} />
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -107,6 +109,15 @@ const WeatherData = () => {
       </Card>
     </div>
   );
+};
+
+// Custom hook to update the map center
+const UpdateMapCenter = ({ position }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView(position, map.getZoom());
+  }, [position, map]);
+  return null;
 };
 
 export default WeatherData;

@@ -1,20 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { Typography, Container } from '@mui/material';
 import SearchBar from './input/SearchBar';
 import WeatherData from './Display/WeatherData';
 
 const MainContainer = () => {
+  const [city, setCity] = useState('London'); // Default city
+
+  const handleSearch = (searchTerm) => {
+    setCity(searchTerm);
+  };
+
   return (
     <div>
       <Container>
-        <SearchBar  />
+        <SearchBar onSearch={handleSearch} />
         <Typography variant="body1" component="p" style={{ padding: 16 }}>
-          Today's Weather Forecast for your city
+          Today's Weather Forecast for {city}
         </Typography>
-        <WeatherData />
+        <WeatherData city={city} />
       </Container>
     </div>
-  )
-}
+  );
+};
 
-export default MainContainer
+export default MainContainer;
