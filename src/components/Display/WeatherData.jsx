@@ -76,7 +76,13 @@ const WeatherData = ({ city }) => {
                 {weatherData.temperature}°C
               </Typography>
               <Typography variant="h6" color="text.secondary">
-                {weatherData.description}
+               Humidity: {weatherData.humidity} 
+              </Typography>
+              <Typography variant="h6" color="text.secondary">
+                Wind Speed: {weatherData.windSpeed} m/s
+              </Typography>
+              <Typography variant="h6" color="text.secondary">
+                Description: {weatherData.description}
               </Typography>
             </div>
             <IconButton>

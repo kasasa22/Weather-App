@@ -4,7 +4,7 @@ import SearchBar from './input/SearchBar';
 import WeatherData from './Display/WeatherData';
 
 const MainContainer = () => {
-  const [city, setCity] = useState('London'); // Default city
+  const [city, setCity] = useState('London'); 
 
   const handleSearch = (searchTerm) => {
     setCity(searchTerm);
